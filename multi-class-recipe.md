@@ -24,61 +24,47 @@ I want to see a list of all of the mobile phone numbers in all my diary entries
 
 ## 2. Design the Class System
 
-_Consider diagramming out the classes and their relationships. Take care to
-focus on the details you see as important, not everything. The diagram below
-uses asciiflow.com but you could also use excalidraw.com, draw.io, or miro.com_
-
 ```
-┌────────────────────────────┐
-│ MusicPlayer                │
-│                            │
-│ - add(track)               │
-│ - all                      │
-│ - search_by_title(keyword) │
-│   => [tracks...]           │
-└───────────┬────────────────┘
-            │
-            │ owns a list of
-            ▼
-┌─────────────────────────┐
-│ Track(title, artist)    │
-│                         │
-│ - title                 │
-│ - artist                │
-│ - format                │
-│   => "TITLE by ARTIST"  │
-└─────────────────────────┘
+┌─────────────────────────────────┐  ┌──────────────────────┐
+│Diary                            │  │TodoList              │
+│ @entry_list                     │  │ @list :array         │
+│                                 │  │ -add(todo) :string   │
+│                                 │  │ -todos :array        |
+│ -add_entry :diaryentry          |  └──────────────────────┘
+│ -list_entries :array            │       ┌─────────────────┐
+│ -list_specific_entries(wpm,time)│       │PhoneBook        |
+|                                 |       |@contacts : array|
+|                                 |       |                 |
+│ -list_phone_numbers             │◄──────│ -extract_numbers│
+└────────────┬────────────────────┘       └─────────────────┘
+             │
+             │contains a list of:
+             │
+┌────────────▼────────────────────┐
+│DiaryEntry                       │
+│ @title :string                  │
+│ @contents :string               │
+│ @word_count :integer            │
+└─────────────────────────────────┘
 ```
 
 _Also design the interface of each class in more detail._
 
 ```ruby
-class MusicLibrary
-  def initialize
-    # ...
-  end
-
-  def add(track) # track is an instance of Track
-    # Track gets added to the library
-    # Returns nothing
-  end
-
-  def all
-    # Returns a list of track objects
-  end
+class Diary
   
-  def search_by_title(keyword) # keyword is a string
-    # Returns a list of tracks with titles that include the keyword
-  end
 end
 
-class Track
-  def initialize(title, artist) # title and artist are both strings
-  end
+class TodoList
 
-  def format
-    # Returns a string of the form "TITLE by ARTIST"
-  end
+end
+
+class PhoneBook
+
+end
+
+class DiaryEntry
+
 end
 ```
 
