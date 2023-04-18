@@ -52,19 +52,55 @@ _Also design the interface of each class in more detail._
 
 ```ruby
 class Diary
-  
+  def initialize
+    @entry_list = []
+  end
+
+  def add_entry(entry) # entry is an instance of DiaryEntry
+    @entry_list << entry
+  end
+
+  def list_entries
+    @entry_list
+  end
+
+  def list_specific_entries(wpm, time)
+    readable_entires = @entry_list.select { |entry| entry.reading_time(wpm) <= minutes }
+    readable_entires.sort_by { |entry| entry.reading_time(wpm) }.last
+  end
 end
 
 class TodoList
+  def initialize
+    @list = []
+  end
 
+  def add(todo)
+    fail "This task is not from the Todo class" unless todo.is_a?(String)
+    @list << todo
+  end
+
+  def todos
+    @list
+  end
 end
 
 class PhoneBook
+  def initialize
+    @contacts = []
+  end
 
+  def extract_numbers
+
+  end
 end
 
 class DiaryEntry
-
+  def initialize(title, contents)
+    @title = title
+    @contents = contents
+    @word_count = contents.split(" ").length
+  end
 end
 ```
 
