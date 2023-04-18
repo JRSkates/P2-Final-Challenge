@@ -44,7 +44,9 @@ I want to see a list of all of the mobile phone numbers in all my diary entries
 │DiaryEntry                       │
 │ @title :string                  │
 │ @contents :string               │
-│ @word_count :integer            │
+│ @word_count :integer            |
+|                                 |
+|  - show_entry                   │
 └─────────────────────────────────┘
 ```
 
@@ -68,6 +70,10 @@ class Diary
     readable_entires = @entry_list.select { |entry| entry.reading_time(wpm) <= minutes }
     readable_entires.sort_by { |entry| entry.reading_time(wpm) }.last
   end
+
+  def list_phone_numbers
+
+  end
 end
 
 class TodoList
@@ -76,7 +82,7 @@ class TodoList
   end
 
   def add(todo)
-    fail "This task is not from the Todo class" unless todo.is_a?(String)
+    fail "This task is not a string" unless todo.is_a?(String)
     @list << todo
   end
 
@@ -101,6 +107,11 @@ class DiaryEntry
     @contents = contents
     @word_count = contents.split(" ").length
   end
+
+  def show_entry
+    @title
+    @contents
+  end
 end
 ```
 
@@ -110,15 +121,27 @@ _Create examples of the classes being used together in different situations and
 combinations that reflect the ways in which the system will be used._
 
 ```ruby
-# EXAMPLE
+diary = Diary.new
+entry_1 = DiaryEntry.new("First Title", "First Contents")
+entry_2 = DiaryEntry.new("Second Title", "Second Contents Second")
+entry_3 = DiaryEntry.new("Third Title", "Third Contents Third Contents")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
 
-# Gets all tracks
-library = MusicLibrary.new
-track_1 = Track.new("Carte Blanche", "Veracocha")
-track_2 = Track.new("Synaesthesia", "The Thrillseekers")
-library.add(track_1)
-library.add(track_2)
-library.all # => [track_1, track_2]
+diary.list_entries # => [entry_1, entry_2, entry_3]
+diary.list_specific_entries('one', 2) # => fails - 'WPM and Minutes need to be integers'
+diary.list_specific_entries(1, 2) # => [entry_1]
+diary.list_specific_entries(1, 3) # => [entry_2]
+
+
+diary = Diary.new
+entry = DiaryEntry.new("First Title", "First 07986746537 Contents")
+entry_2 = DiaryEntry.new("Second Title", "Second 07564372837 Contents")
+diary.add(entry)
+diary.list_phone_numbers # => [07986746537]
+diary.add(entry_2)
+diary.list_phone_numbers # => [07986746537, 07564372837]
 ```
 
 ## 4. Create Examples as Unit Tests
@@ -128,10 +151,22 @@ a more granular level of detail._
 
 ```ruby
 # EXAMPLE
+DiaryEntry
+# create a new entry
+entry = DiaryEntry.new("First Entry", "First Contents")
+entry.show_entry # => "First Entry" , "First Contents"
 
-# Constructs a track
-track = Track.new("Carte Blanche", "Veracocha")
-track.title # => "Carte Blanche"
+Todolist
+
+list = Todolist.new
+list.add("Walk the dog")
+list.add("Walk the cat")
+list.todo # => ['Walk the dog', 'Walk the cat]
+
+Phonebook
+
+phonebook = Phonebook.new
+phonebook.extract_numbers 
 ```
 
 _Encode each example as a test. You can add to the above list as you go._
